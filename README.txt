@@ -1,4 +1,14 @@
 
+
+
+
+
+*** django-docimport does not exist yet. Here's some thoughts on what it might look like if/when it does. ***
+
+
+
+
+
 django-docimport is a small framework for importing bulk data into your Django application from document formats.
 
 It was written to address a specific problem that the author runs into frequently:
