@@ -9,7 +9,7 @@ It was written to address a specific problem that the author runs into frequentl
  * When new data is appended to a document, the data document should be reimported; newly added data 
    should be inserted, but data already in the relational database should not be duplicated there
  * Optionally, existing data may change between imports. You may want to update existing records with
-   its new values.
+   its new values if you can identify that it is still the same data referent.
 
 Conceptually this is somewhat similar to running `svn up`: the Django database is your working copy,
 and the data document represents the repository's current state.
@@ -44,3 +44,18 @@ Some of the specific applications that drove the author to write this:
  3. Similar to #2, but this time the data comes from a blog hosted on Blogger. Blogger allows you to
     export your entire blog archive in an XML-based "Blogger export file."
 
+ 4. flunc-webrunner executes flunc tests using variables from HTTP (POST /first/testsuite/?user=joe)
+    and should serve HTML forms that expose those variables. Flunc itself doesn't maintain knowledge
+    about what variables are available for a given test suite. That's actually a sort of relational
+    metadata on the tests. So it's a natural fit for a django-vcexport app: flunc-webmanager exports
+    static HTML web forms, that can be served directly, which represent its relational analysis about
+    the tests and their variables.
+
+    So again here's the same "import a set of canonical documents into Django for analysis" pattern.
+    We want to write a little import script that figures out the variables used in a test, given that
+    test file. (Individual .twill tests define variables. .tsuite suites can pass in their own variables,
+    and suites can contain both suites and tests. But if we just figure out the direct variables used
+    in each test or suite, the relations that we build up during import can construct the full variables
+    available for a given suite.)
+
+    With django-docimport, we could hook up a custom "flunc" importer to a checkout of ftests. 
